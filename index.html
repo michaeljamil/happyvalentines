@@ -28,7 +28,7 @@
     height: 50px; /* Set heart button height */
     font-size: 24px;
     cursor: pointer;
-    position: absolute;
+    position: fixed;
     bottom: 20px;
     left: calc(50% - 25px); /* Center heart button horizontally */
     transition: all 0.3s ease-in-out;
@@ -43,8 +43,8 @@
 
   .message-box {
     display: none;
-    position: absolute;
-    bottom: 80px;
+    position: fixed;
+    bottom: 100px;
     left: 50%;
     transform: translateX(-50%);
     padding: 20px;
@@ -277,7 +277,11 @@
 <button class="heart-button" onclick="toggleMessageBox()">&#10084;</button>
 
 <div class="message-box" id="messageBox">
-  <p>My dearest, happy Valentine's Day! You mean the world to me and I am grateful for every moment we share together. I love you more than words can express.</p>
+  <p>Hemlooo, Happy Valentines Day, here's a simple digital gift from me habu q kaya magpadarang flowers jan ta baka kiligon ka sa delivery rider 
+    , pagbalik ko nalang after this hell of acads. I have a (not so much) surprise for u hehe, kaya take your time achieving your goals, here lang me 
+    supporting and admiring you day by day. Would u be my post valentine date? Happy valentines and goodluck sa exam mooooo padayon lng 
+    so proud of uuuuuuuu
+  </p>
 </div>
 
 <!-- Flower HTML -->
@@ -323,7 +327,7 @@
 
   for (let i = 0; i < 20; i++) appendHeart();
 
-  document.body.addEventListener("mousemove", (e) => {
+  document.body.addEventListener("pointermove", (e) => {
     gsap.to(".heart", {
       x: e.clientX,
       y: e.clientY,
