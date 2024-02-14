@@ -1,1 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine's Day Greeting</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure full viewport height */
+    background-color: #f7e0e0;
+    font-family: 'Helvetica', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
 
+  .heart-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px; /* Set heart button width */
+    height: 50px; /* Set heart button height */
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    left: calc(50% - 25px); /* Center heart button horizontally */
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1; /* Ensure heart button is above message box */
+  }
+
+  .heart-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .message-box {
+    display: none;
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px;
+    background-color: white;
+    border: 2px solid red;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    width: 300px; /* Set message box width */
+    text-align: center;
+    z-index: 1; /* Ensure message box is above flowers */
+  }
+
+  .message-box.active {
+    display: block;
+  }
+
+  .message-box p {
+    margin: 0;
+  }
+
+  /* Flower CSS */
+  .flower {
+    position:relative;
+    height:12rem; /* Set initial flower height */
+    width:6rem; /* Set initial flower width */
+    margin:3rem auto;
+    opacity: 0; /* Initially hidden */
+    transform: scale(0); /* Initially scaled down */
+    animation: bloom 2s ease-in-out forwards; /* Apply bloom animation */
+  }
+
+  .rose {
+    position:absolute;
+    z-index:20;
+    top:0;
+    left:0;
+    width:0;
+    height:0;
+    border-top:3rem solid red;
+    border-left:3rem solid transparent;
+    border-right:3rem solid transparent;
+  }
+
+  .stem {
+    position:absolute;
+    z-index:10;
+    width:0.2rem;
+    height:8rem;
+    top:2.8rem;
+    left:50%;
+    margin-left:-0.1rem;
+    background:green;
+  }
+
+  .leaf {
+    position:absolute;
+    left:0.4rem;
+    width:2rem;
+    height:1rem;
+    background:green;
+    border-radius: 1rem / 0.5rem;
+  }
+
+  .leaf:before {
+    content:'';
+    position:absolute;
+    left:-0.25rem;
+    top:0.1rem;
+    width: 0;
+    height: 0;
+    border-top: 0.4rem solid transparent;
+    border-right: 0.7rem solid green;
+    border-bottom: 0.4rem solid transparent;
+  }
+
+  .left {
+    top:3.7rem;
+    left:-2.25rem;
+    -webkit-transform:rotate(180deg);
+  }
+
+  .right {
+    top:2rem;
+    left:0.35rem;
+  }
+
+  .pot {
+    position:absolute;
+    z-index:20;
+    left:50%;
+    bottom:0;
+    width:2rem;
+    height:2rem;
+    margin-left:-1rem;
+    background:rgba(87, 80, 54, 1);
+  }
+
+  .pot:before {
+    content:'';
+    position:absolute;
+    left:0;
+    width:0;
+    height:0;
+    border-top:2rem solid rgba(87, 80, 54, 0.9);
+    border-left:2rem solid transparent;
+    border-right:2rem solid transparent;
+  }
+
+  .pot:after {
+    content:'';
+    position:absolute;
+    right:0;
+    width:0;
+    height:0;
+    border-top:2rem solid rgba(87, 80, 54, 0.9);
+    border-left:2rem solid transparent;
+    border-right:2rem solid transparent;
+  }
+
+  /* Flower Animation */
+  @keyframes bloom {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Heart CSS */
+  .heart-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .heart-container .heart,
+  .heart-container .heart svg {
+    width: 5vw; /* Set heart size relative to viewport width */
+    height: 5vw; /* Set heart size relative to viewport width */
+  }
+
+  .heart-container .heart {
+    position: absolute;
+    top: -5vw; /* Set top position relative to viewport width */
+    left: -5vw; /* Set left position relative to viewport width */
+  }
+
+  .heart-container .heart svg {
+    fill: #f44336;
+    fill: url("#MyGradient");
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .heart-button {
+      width: 40px; /* Adjust heart button width for smaller screens */
+      height: 40px; /* Adjust heart button height for smaller screens */
+      font-size: 20px; /* Adjust heart button font size for smaller screens */
+      bottom: 10px; /* Adjust heart button position for smaller screens */
+      left: calc(50% - 20px); /* Center heart button horizontally */
+    }
+
+    .message-box {
+      width: 80%; /* Adjust message box width for smaller screens */
+      padding: 15px; /* Adjust message box padding for smaller screens */
+      bottom: 60px; /* Adjust message box position for smaller screens */
+    }
+
+    .flower {
+      height: 8rem; /* Adjust flower height for smaller screens */
+      width: 4rem; /* Adjust flower width for smaller screens */
+      margin: 2rem auto; /* Adjust flower margin for smaller screens */
+    }
+
+    .flower .rose {
+      border-top: 2rem solid red; /* Adjust rose border top size for smaller screens */
+      border-left: 2rem solid transparent; /* Adjust rose border left size for smaller screens */
+      border-right: 2rem solid transparent; /* Adjust rose border right size for smaller screens */
+    }
+
+    .stem {
+      height: 6rem; /* Adjust stem height for smaller screens */
+    }
+
+    .leaf {
+      width: 1.5rem; /* Adjust leaf width for smaller screens */
+      height: 0.75rem; /* Adjust leaf height for smaller screens */
+    }
+
+    .leaf:before {
+      left: -0.125rem; /* Adjust leaf:before left position for smaller screens */
+      top: 0.05rem; /* Adjust leaf:before top position for smaller screens */
+      border-top: 0.2rem solid transparent; /* Adjust leaf:before border top size for smaller screens */
+      border-right: 0.35rem solid green; /* Adjust leaf:before border right size for smaller screens */
+      border-bottom: 0.2rem solid transparent; /* Adjust leaf:before border bottom size for smaller screens */
+    }
+
+    .left {
+      top: 2.8rem; /* Adjust left leaf top position for smaller screens */
+      left: -1.125rem; /* Adjust left leaf left position for smaller screens */
+    }
+
+    .right {
+      top: 1.5rem; /* Adjust right leaf top position for smaller screens */
+      left: 0.175rem; /* Adjust right leaf left position for smaller screens */
+    }
+
+    .pot {
+      width: 1.5rem; /* Adjust pot width for smaller screens */
+      height: 1.5rem; /* Adjust pot height for smaller screens */
+    }
+
+    .pot:before,
+    .pot:after {
+      border-top: 1.5rem solid rgba(87, 80, 54, 0.9); /* Adjust pot border top size for smaller screens */
+      border-left: 1.5rem solid transparent; /* Adjust pot border left size for smaller screens */
+      border-right: 1.5rem solid transparent; /* Adjust pot border right size for smaller screens */
+    }
+  }
+</style>
+</head>
+<body>
+
+<button class="heart-button" onclick="toggleMessageBox()">&#10084;</button>
+
+<div class="message-box" id="messageBox">
+  <p>My dearest, happy Valentine's Day! You mean the world to me and I am grateful for every moment we share together. I love you more than words can express.</p>
+</div>
+
+<!-- Flower HTML -->
+<div class="flower">
+  <div class="rose"></div>
+  <div class="stem">
+    <div class="leaf left"></div>
+    <div class="leaf right"></div>
+  </div>
+  <div class="pot"></div>
+</div>
+
+<!-- Heart Container HTML -->
+<div class="heart-container"></div>
+
+<!-- GSAP library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+<script>
+  function toggleMessageBox() {
+    var messageBox = document.getElementById("messageBox");
+    messageBox.classList.toggle("active");
+  }
+
+  function appendHeart() {
+    let container = document.querySelector(".heart-container");
+    let heart = `
+      <div class="heart">
+        <svg id="color" enable-background="new 0 0 24 24" height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="MyGradient">
+              <stop offset="10%" stop-color="#e74c3c" />
+              <stop offset="90%" stop-color="#FF3C30" />
+            </linearGradient>
+          </defs>
+          <path d="m11.466 22.776c.141.144.333.224.534.224s.393-.08.534-.224l9.594-9.721c4.001-4.053 1.158-11.055-4.532-11.055-3.417 0-4.985 2.511-5.596 2.98-.614-.471-2.172-2.98-5.596-2.98-5.672 0-8.55 6.984-4.531 11.055z"/>
+        </svg>
+      </div>
+    `;
+
+    container.insertAdjacentHTML("beforeend", heart);
+  }
+
+  for (let i = 0; i < 20; i++) appendHeart();
+
+  document.body.addEventListener("mousemove", (e) => {
+    gsap.to(".heart", {
+      x: e.clientX,
+      y: e.clientY,
+      stagger: 0.2
+    });
+  });
+</script>
+
+</body>
+</html>
