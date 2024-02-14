@@ -274,7 +274,7 @@
 </head>
 <body>
 
-<button class="heart-button" onclick="toggleMessageBox()">&#10084;</button>
+<button class="heart-button" id="heartButton">&#10084;</button>
 
 <div class="message-box" id="messageBox">
   <p>Hemlooo, Happy Valentines Day, here's a simple digital gift from me habu q kaya magpadarang flowers jan ta baka kiligon ka sa delivery rider 
@@ -336,7 +336,14 @@
   }
 
   document.body.addEventListener("mousemove", animateHeart);
-  document.body.addEventListener("touchstart", animateHeart);
+  document.body.addEventListener("touchstart", function(e) {
+    // Prevent double-tap zooming
+    if (e.touches.length > 1) {
+      e.preventDefault();
+    } else {
+      animateHeart(e);
+    }
+  }, { passive: false }); // Ensure the listener is not passive
 </script>
 
 </body>
